@@ -1,0 +1,1 @@
+export const ProtectedRoutes =["/login", "/create-shop", "/user","/user:page", "/admin","admin/:page"];

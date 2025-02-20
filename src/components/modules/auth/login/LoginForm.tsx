@@ -16,6 +16,8 @@ import Logo from "@/app/assests/svgs/Logo";
 import { loginUser, reCaptchaTokenVerification } from "@/services/AuthService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -23,6 +25,11 @@ import { toast } from "sonner";
 import { loginSchema } from "./loginValidation";
 
 export default function LoginForm() {
+
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(loginSchema),
   });
@@ -49,6 +56,13 @@ export default function LoginForm() {
       const res = await loginUser(data);
       if (res?.success) {
         toast.success(res?.message);
+        if (redirect){
+          router.push(redirect);
+        }
+        else{
+          router.push("/profile");
+        }
+
       } else {
         toast.error(res?.message);
       }
@@ -57,6 +71,7 @@ export default function LoginForm() {
     }
   };
 
+  
   return (
     <div className="border-2 border-gray-300 rounded-xl flex-grow max-w-md w-full p-5">
       <div className="flex items-center space-x-4 ">
