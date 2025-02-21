@@ -1,6 +1,4 @@
 "use client";
-
-import Logo from "@/app/assests/svgs/Logo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -10,6 +8,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import Logo from "@/app/assests/svgs/Logo";
 import { ProtectedRoutes } from "@/constants";
 import { useUser } from "@/context/UserContext";
 import { logout } from "@/services/AuthService";
@@ -20,18 +20,15 @@ import { Button } from "../ui/button";
 
 export default function Navbar() {
   const { user, setIsLoading } = useUser();
-
-  const router = useRouter();
   const pathname = usePathname();
- 
+  const router = useRouter();
 
-  const handleLogOut = async () => {
+  const handleLogOut = () => {
+    logout();
     setIsLoading(true);
-    await logout();
-    setIsLoading(false);
-    if(ProtectedRoutes.some(route=> pathname.match(route))){
+    if (ProtectedRoutes.some((route) => pathname.match(route))) {
       router.push("/");
-    } // Redirect to login page after logout
+    }
   };
 
   return (
@@ -42,7 +39,7 @@ export default function Navbar() {
             <Logo /> Next Mart
           </h1>
         </Link>
-        <div className="max-w-md flex-grow">
+        <div className="max-w-md  flex-grow">
           <input
             type="text"
             placeholder="Search for products"
@@ -74,7 +71,9 @@ export default function Navbar() {
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href={`/${user?.role}/dashboard`}>Dashboard</Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem>My Shop</DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
