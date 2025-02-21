@@ -1,9 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import DeleteConfirmationModal from "@/components/ui/core/NMModal/DeleteConfirmationModal";
 import { NMTable } from "@/components/ui/core/NMTable";
+import { deleteCategory } from "@/services/Category";
 import { ICategory } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
+import { Trash } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
+import { toast } from "sonner";
 import CreateCategoryModal from "./CreateCategoryModal";
 
 type TCategoriesProps = {
@@ -11,7 +17,33 @@ type TCategoriesProps = {
 };
 
 const ManageCategories = ({ categories }: TCategoriesProps) => {
-  console.log("Categories:", categories); // Debugging
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
+  const handleDelete = (data: ICategory) => {
+    console.log(data);
+    setSelectedId(data?._id);
+    setSelectedItem(data?.name);
+    setModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      if (selectedId) {
+        const res = await deleteCategory(selectedId);
+        console.log(res);
+        if (res.success) {
+          toast.success(res.message);
+          setModalOpen(false);
+        } else {
+          toast.error(res.message);
+        }
+      }
+    } catch (err: any) {
+      console.error(err?.message);
+    }
+  };
 
   const columns: ColumnDef<ICategory>[] = [
     {
@@ -19,19 +51,13 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
       header: () => <div>Category Name</div>,
       cell: ({ row }) => (
         <div className="flex items-center space-x-3">
-          {row.original.icon ? (
-            <Image
-              src={row.original.icon}
-              alt={row.original.name}
-              width={40}
-              height={40}
-              className="w-8 h-8 rounded-full"
-            />
-          ) : (
-            <span className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-              ?
-            </span>
-          )}
+          <Image
+            src={row.original.icon}
+            alt={row.original.name}
+            width={40}
+            height={40}
+            className="w-8 h-8 rounded-full"
+          />
           <span className="truncate">{row.original.name}</span>
         </div>
       ),
@@ -53,6 +79,19 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
         </div>
       ),
     },
+    {
+      accessorKey: "action",
+      header: () => <div>Action</div>,
+      cell: ({ row }) => (
+        <button
+          className="text-red-500"
+          title="Delete"
+          onClick={() => handleDelete(row.original)}
+        >
+          <Trash className="w-5 h-5" />
+        </button>
+      ),
+    },
   ];
 
   return (
@@ -61,11 +100,13 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
         <h1 className="text-xl font-bold">Manage Categories</h1>
         <CreateCategoryModal />
       </div>
-      {categories.length > 0 ? (
-        <NMTable data={categories} columns={columns} />
-      ) : (
-        <p className="text-center text-gray-500 mt-4">No categories available.</p>
-      )}
+      <NMTable data={categories} columns={columns} />
+      <DeleteConfirmationModal
+        name={selectedItem}
+        isOpen={isModalOpen}
+        onOpenChange={setModalOpen}
+        onConfirm={handleDeleteConfirm}
+      />
     </div>
   );
 };
