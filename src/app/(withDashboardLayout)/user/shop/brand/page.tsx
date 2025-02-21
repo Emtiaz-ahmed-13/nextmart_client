@@ -1,0 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+import ManageBrands from "@/components/modules/brand";
+import { getAllBrands } from "@/services/Brand";
+
+const ProductBrandPage = async () => {
+  const { data, meta } = await getAllBrands();
+  return (
+    <div>
+      <ManageBrands brands={data} />
+    </div>
+  );
+};
+
+export default ProductBrandPage;

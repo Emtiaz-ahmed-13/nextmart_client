@@ -42,7 +42,7 @@ const data = {
       items: [
         {
           title: "Manage Products",
-          url: "/user/shop/products",
+          url: "/user/shop/products/add-product",
         },
         {
           title: "Manage Categories",
