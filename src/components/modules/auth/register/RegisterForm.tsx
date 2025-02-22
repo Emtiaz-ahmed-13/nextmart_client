@@ -2,12 +2,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -16,7 +16,7 @@ import toast from "react-hot-toast";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Logo from "@/app/assests/svgs/Logo";
+import Logo from "@/assests/svgs/Logo";
 import { registerUser } from "@/services/AuthService";
 import { registrationSchema } from "./RegisterValidation";
 

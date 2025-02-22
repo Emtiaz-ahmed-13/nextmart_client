@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import Logo from "@/assests/svgs/Logo";
+
+
 import { Button } from "@/components/ui/button";
-import NMImageUploader from "@/components/ui/core/NMImageUploder";
-import ImagePreviewer from "@/components/ui/core/NMImageUploder/imagePreviewer";
+
 import {
     Form,
     FormControl,
@@ -13,20 +13,8 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { getAllBrands } from "@/services/Brand";
-import { getAllCategories } from "@/services/Category";
-import { addProduct } from "@/services/Product";
-import { IBrand, ICategory } from "@/types";
 import { Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
     FieldValues,
@@ -34,11 +22,29 @@ import {
     useFieldArray,
     useForm,
 } from "react-hook-form";
+
+import Logo from "@/assests/svgs/Logo";
+import NMImageUploader from "@/components/ui/core/NMImageUploder";
+import ImagePreviewer from "@/components/ui/core/NMImageUploder/imagePreviewer";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { getAllBrands } from "@/services/Brand";
+import { getAllCategories } from "@/services/Category";
+import { updateProduct } from "@/services/Product";
+import { IBrand, ICategory, IProduct } from "@/types";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-export default function AddProductsForm() {
+export default function UpdateProductForm({ product }: { product: IProduct }) {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
-  const [imagePreview, setImagePreview] = useState<string[] | []>([]);
+  const [imagePreview, setImagePreview] = useState<string[] | []>(
+    product?.imageUrls || []
+  );
   const [categories, setCategories] = useState<ICategory[] | []>([]);
   const [brands, setBrands] = useState<IBrand[] | []>([]);
 
@@ -46,16 +52,24 @@ export default function AddProductsForm() {
 
   const form = useForm({
     defaultValues: {
-      name: "",
-      description: "",
-      price: "",
-      category: "",
-      brand: "",
-      stock: "",
-      weight: "",
-      availableColors: [{ value: "" }],
-      keyFeatures: [{ value: "" }],
-      specification: [{ key: "", value: "" }],
+      name: product?.name || "",
+      description: product?.description || "",
+      price: product?.price || "",
+      category: product?.category?.name || "",
+      brand: product?.brand?.name || "",
+      stock: product?.stock || "",
+      weight: product?.weight || "",
+      availableColors: product?.availableColors?.map((color) => ({
+        value: color,
+      })) || [{ value: "" }],
+
+      specification: Object.entries(product?.specification || {}).map(
+        ([key, value]) => ({ key, value })
+      ) || [{ key: "", value: "" }],
+
+      keyFeatures: product?.keyFeatures?.map((feature) => ({
+        value: feature,
+      })) || [{ value: "" }],
     },
   });
 
@@ -90,8 +104,6 @@ export default function AddProductsForm() {
     appendSpec({ key: "", value: "" });
   };
 
-  // console.log(specFields);
-
   useEffect(() => {
     const fetchData = async () => {
       const [categoriesData, brandsData] = await Promise.all([
@@ -121,8 +133,6 @@ export default function AddProductsForm() {
         (specification[item.key] = item.value)
     );
 
-    // console.log({ availableColors, keyFeatures, specification });
-
     const modifiedData = {
       ...data,
       availableColors,
@@ -140,7 +150,7 @@ export default function AddProductsForm() {
       formData.append("images", file);
     }
     try {
-      const res = await addProduct(formData);
+      const res = await updateProduct(formData, product?._id);
 
       if (res.success) {
         toast.success(res.message);
@@ -158,7 +168,7 @@ export default function AddProductsForm() {
       <div className="flex items-center space-x-4 mb-5 ">
         <Logo />
 
-        <h1 className="text-xl font-bold">Add Product</h1>
+        <h1 className="text-xl font-bold">Update Product Info</h1>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -435,7 +445,7 @@ export default function AddProductsForm() {
           </div>
 
           <Button type="submit" className="mt-5 w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Adding Product....." : "Add Product"}
+            {isSubmitting ? "Updating Product....." : "Update Product"}
           </Button>
         </form>
       </Form>

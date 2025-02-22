@@ -1,27 +1,27 @@
 "use client";
 
 import {
-  Bot,
-  Frame,
-  LifeBuoy,
-  Map,
-  PieChart,
-  Send,
-  Settings,
-  SquareTerminal,
+    Bot,
+    Frame,
+    LifeBuoy,
+    Map,
+    PieChart,
+    Send,
+    Settings,
+    SquareTerminal,
 } from "lucide-react";
 import * as React from "react";
 
 
-import Logo from "@/app/assests/svgs/Logo";
+import Logo from "@/assests/svgs/Logo";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { NavMain } from "./nav-main";
