@@ -1,37 +1,36 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-
 import { Button } from "@/components/ui/button";
 
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
-    FieldValues,
-    SubmitHandler,
-    useFieldArray,
-    useForm,
+  FieldValues,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
 } from "react-hook-form";
 
 import Logo from "@/assests/svgs/Logo";
 import NMImageUploader from "@/components/ui/core/NMImageUploder";
 import ImagePreviewer from "@/components/ui/core/NMImageUploder/imagePreviewer";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { getAllBrands } from "@/services/Brand";
 import { getAllCategories } from "@/services/Category";

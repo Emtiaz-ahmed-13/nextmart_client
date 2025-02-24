@@ -8,6 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { addProduct } from "@/redux/features/CartSlice";
+import { useAppDispatch } from "@/redux/hook";
 
 import { IProduct } from "@/types";
 import { Heart, ShoppingCart, Star } from "lucide-react";
@@ -15,6 +17,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 const ProductCard = ({ product }: { product: IProduct }) => {
+  const dispatch = useAppDispatch();
+
+  const handleAddProduct = (product: IProduct) => {
+    dispatch(addProduct(product));
+  };
   return (
     <Card className="p-3">
       <CardHeader className="relative p-0 h-48">
@@ -81,6 +88,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
             Buy Now
           </Button>
           <Button
+            onClick={() => handleAddProduct(product)}
             disabled={product?.stock === 0}
             variant="outline"
             size="sm"

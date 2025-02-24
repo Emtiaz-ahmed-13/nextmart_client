@@ -1,8 +1,11 @@
-import { getAllProducts } from "@/services/Product";
+"use client";
+import { orderedProductsSelector } from "@/redux/features/CartSlice";
+import { useAppSelector } from "@/redux/hook";
 import { IProduct } from "@/types";
 import CartProductCard from "./CartProductCard";
-export default async function CartProducts() {
-  const { data: products } = await getAllProducts();
+
+export default function CartProducts() {
+  const products = useAppSelector(orderedProductsSelector);
 
   return (
     <div className="border-2 border-white bg-background brightness-105 rounded-md col-span-8 h-full row-span-3 p-10 space-y-5">
@@ -16,7 +19,7 @@ export default async function CartProducts() {
           <div className="flex justify-center items-center "></div>
         </div>
       )}
-      {products.map((product: IProduct) => (
+      {products?.map((product: IProduct) => (
         <CartProductCard key={product._id} product={product} />
       ))}
     </div>

@@ -1,14 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import ManageProducts from "@/components/modules/shop/product";
-import { getAllProducts } from "@/services/Product";
+import AddProductsForm from "@/components/modules/shop/product/AddProductForm";
 
-const ManageProductsPage = async () => {
-  const { data, meta } = await getAllProducts();
+const AddProductPage = () => {
   return (
-    <div>
-      <ManageProducts products={data} />
+    <div className="flex items-center justify-center">
+      <AddProductsForm />
     </div>
   );
 };
 
-export default ManageProductsPage;
+export default AddProductPage;

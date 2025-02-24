@@ -5,20 +5,20 @@ import { Button } from "@/components/ui/button";
 import NMImageUploader from "@/components/ui/core/NMImageUploder";
 import ImagePreviewer from "@/components/ui/core/NMImageUploder/imagePreviewer";
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { getAllBrands } from "@/services/Brand";
@@ -29,10 +29,10 @@ import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
-    FieldValues,
-    SubmitHandler,
-    useFieldArray,
-    useForm,
+  FieldValues,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
 } from "react-hook-form";
 import { toast } from "sonner";
 
